@@ -1,0 +1,143 @@
+#! c:/iverilog-x86/bin/vvp
+:ivl_version "10.0 (stable)" "(v10_0)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "vhdl_sys";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0125ee80 .scope module, "dff_sync" "dff_sync" 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "d"
+    .port_info 1 /INPUT 1 "clear"
+    .port_info 2 /INPUT 1 "clock"
+    .port_info 3 /OUTPUT 1 "q"
+o028a3fdc .functor BUFZ 1, C4<z>; HiZ drive
+v0125ef50_0 .net "clear", 0 0, o028a3fdc;  0 drivers
+o028a3ff4 .functor BUFZ 1, C4<z>; HiZ drive
+v0125e7d8_0 .net "clock", 0 0, o028a3ff4;  0 drivers
+o028a400c .functor BUFZ 1, C4<z>; HiZ drive
+v0125e830_0 .net "d", 0 0, o028a400c;  0 drivers
+v01254e68_0 .var "q", 0 0;
+E_028a3578 .event posedge, v0125e7d8_0;
+S_0125e708 .scope module, "testing" "testing" 2 31;
+ .timescale 0 0;
+v01254248_0 .var "clk", 0 0;
+v012542a0_0 .var "d", 0 0;
+v012542f8_0 .net "q", 0 0, v012541f0_0;  1 drivers
+v012535f8_0 .var "rst", 0 0;
+E_028a3690 .event posedge, v01254fe8_0;
+S_01254ec0 .scope module, "ds" "dff_async" 2 36, 2 16 0, S_0125e708;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "d"
+    .port_info 1 /INPUT 1 "clear"
+    .port_info 2 /INPUT 1 "clock"
+    .port_info 3 /OUTPUT 1 "q"
+v01254f90_0 .net "clear", 0 0, v012535f8_0;  1 drivers
+v01254fe8_0 .net "clock", 0 0, v01254248_0;  1 drivers
+v01254198_0 .net "d", 0 0, v012542a0_0;  1 drivers
+v012541f0_0 .var "q", 0 0;
+E_028a3640/0 .event negedge, v01254f90_0;
+E_028a3640/1 .event posedge, v01254fe8_0;
+E_028a3640 .event/or E_028a3640/0, E_028a3640/1;
+    .scope S_0125ee80;
+T_0 ;
+    %wait E_028a3578;
+    %load/vec4 v0125ef50_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v01254e68_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v0125e830_0;
+    %assign/vec4 v01254e68_0, 0;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_01254ec0;
+T_1 ;
+    %wait E_028a3640;
+    %load/vec4 v01254f90_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.0, 8;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v012541f0_0, 0;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/vec4 v01254198_0;
+    %assign/vec4 v012541f0_0, 0;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1;
+    .scope S_0125e708;
+T_2 ;
+    %wait E_028a3690;
+    %vpi_call 2 40 "$display", "d=%b, clk=%b, rst=%b, q=%b\012", v012542a0_0, v01254248_0, v012535f8_0, v012542f8_0 {0 0 0};
+    %jmp T_2;
+    .thread T_2;
+    .scope S_0125e708;
+T_3 ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v01254248_0, 0, 1;
+    %delay 3, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v01254248_0, 0, 1;
+    %delay 3, 0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v01254248_0, 0, 1;
+    %delay 3, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v01254248_0, 0, 1;
+    %delay 3, 0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v01254248_0, 0, 1;
+    %delay 3, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v01254248_0, 0, 1;
+    %delay 3, 0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v01254248_0, 0, 1;
+    %end;
+    .thread T_3;
+    .scope S_0125e708;
+T_4 ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v012542a0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v012535f8_0, 0, 1;
+    %delay 4, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v012542a0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v012535f8_0, 0, 1;
+    %delay 5, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v012542a0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v012535f8_0, 0, 1;
+    %delay 3, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v012542a0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v012535f8_0, 0, 1;
+    %delay 5, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v012542a0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v012535f8_0, 0, 1;
+    %end;
+    .thread T_4;
+    .scope S_0125e708;
+T_5 ;
+    %vpi_call 2 75 "$dumpfile", "filename.vcd" {0 0 0};
+    %vpi_call 2 76 "$dumpvars" {0 0 0};
+    %end;
+    .thread T_5;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "dff.v";

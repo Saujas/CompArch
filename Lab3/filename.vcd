@@ -1,0 +1,56 @@
+$date
+	Tue Sep 03 15:49:25 2019
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module test $end
+$var wire 4 ! Q [3:0] $end
+$var reg 1 " CLK $end
+$var reg 1 # EN $end
+$var reg 1 $ in $end
+$scope module r1 $end
+$var wire 1 " clk $end
+$var wire 1 # en $end
+$var wire 1 $ in $end
+$var reg 4 % q [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b1010 %
+0$
+0#
+0"
+b1010 !
+$end
+#2
+1"
+#4
+0"
+1#
+1$
+#6
+b1101 !
+b1101 %
+1"
+#8
+0"
+0#
+#10
+1"
+#12
+0"
+1#
+0$
+#14
+b110 !
+b110 %
+1"
+#16
+0"
+#17
