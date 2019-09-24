@@ -230,6 +230,6 @@ module tbRegFile;
 			#10 RegWrite = 1'b0;
 			#10 ReadReg1 = 2'b00; ReadReg2 = 2'b01;
 			#10 ReadReg1 = 2'b10; ReadReg2 = 2'b11;
-			#10 $finish;
+			#100 $finish;
 		end
 endmodule
