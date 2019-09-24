@@ -169,15 +169,67 @@ module RegFile(clk,reset,ReadReg1,ReadReg2,WriteData,WriteReg,RegWrite,ReadData1
 	wire [3:0] o1;
 	wire [3:0] register;
 	
-	and (a1, clk, RegWrite);
+	wire [3:0] CLK;
+	genvar j;
 	
+	and (a1, clk, RegWrite);
 	decoder2_4 d1(register, WriteReg);
 	
-	//initialize registers
+	generate for (j=0; j<4;j=j+1) begin: mux_loop
+
+		and (CLK[j], a1, register[j]);
+
+	end
+	endgenerate
 	
-	//write to them
 	
-	//read from them
+	wire [31:0] r1;
+	wire [31:0] r2;
+	wire [31:0] r3;
+	wire [31:0] r4;
+	wire [31:0] d0;
+	/*
+	assign d0 = 32'h00000000;
 	
+	reg_32bit rr1(r1, d0, 1, reset);
+	reg_32bit rr2(r2, d0, 1, reset);
+	reg_32bit rr3(r3, d0, 1, reset);
+	reg_32bit rr4(r4, d0, 1, reset);
+	*/
+	reg_32bit rr1(r1, WriteData, CLK[0], reset);
+	reg_32bit rr2(r2, WriteData, CLK[1], reset);
+	reg_32bit rr3(r3, WriteData, CLK[2], reset);
+	reg_32bit rr4(r4, WriteData, CLK[3], reset);
 	
+	bit_32_mux4_1 m1(ReadData1,r1,r2,r3,r4,ReadReg1);
+	bit_32_mux4_1 m2(ReadData2,r1,r2,r3,r4,ReadReg2);
 	
+endmodule
+
+
+
+module tbRegFile;
+	reg clk, reset, RegWrite;
+	reg [1:0] ReadReg1, ReadReg2, WriteReg;
+	reg [31:0] WriteData;
+	wire [31:0] ReadData1, ReadData2;
+	
+	RegFile rf(clk,reset,ReadReg1,ReadReg2,WriteData,WriteReg,RegWrite,ReadData1,ReadData2);
+	
+	initial
+		begin
+			$monitor($time, ": Reset = %b, RegWrite = %b, ReadReg1 = %b, ReadReg2 = %b, WriteRegNo = %b, WriteData = %b, ReadData1 = %b, ReadData2 = %b.", reset, RegWrite, ReadReg1, ReadReg2, WriteReg, WriteData, ReadData1, ReadData2);
+			#0 clk = 1'b1;
+			#0 reset = 1'b1;
+			#0 ReadReg1 = 2'b00;
+			#0 ReadReg2 = 2'b01;
+			#10 RegWrite = 1'b1;  WriteData = 32'hF0F0F0F0; WriteReg = 2'b00;
+			#10 RegWrite = 1'b1;  WriteData = 32'h00000000; WriteReg = 2'b01;
+			#10 RegWrite = 1'b1;  WriteData = 32'h0F0F0F0F; WriteReg = 2'b10;
+			#10 RegWrite = 1'b1;  WriteData = 32'hFFFFFFFF; WriteReg = 2'b11;
+			#10 RegWrite = 1'b0;
+			#10 ReadReg1 = 2'b00; ReadReg2 = 2'b01;
+			#10 ReadReg1 = 2'b10; ReadReg2 = 2'b11;
+			#10 $finish;
+		end
+endmodule
